@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block menu %}
+<nav>
+    <a href="index.php">Home</a>
+
+    {% if loggedin is same as(TRUE) %}
+        <a href="dash.php">Dashboard</a>
+
+        <a href="logout.php">Abmelden</a>
+    {% endif %}
+
+    {% if isadmin is same as(TRUE) %}
+            <a href="dash.php">Dashboard</a>
+
+            <a href="tags.php">Tags verwalten</a>
+
+            <a href="logout.php">Abmelden</a>
+    {% endif %}
+
+    {% if loggedin is same as(FALSE) %}
+        <a href="register.php">Registrieren</a>
+        <a href="login.php">Einloggen</a>
+    {% endif %}
+</nav>
+{% endblock %}

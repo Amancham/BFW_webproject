@@ -70,7 +70,7 @@ else
         (!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['pwd']))) {
             $pdo = Database::getInstance();
             $pwd_hashed = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
-            $create_admin = "INSERT INTO user (username, email, password) VALUES ('".$_POST['username']."', '".$_POST['email']."', '".$pwd_hashed."');";
+            $create_admin = "INSERT INTO user (username, email, password, roles) VALUES ('".$_POST['username']."', '".$_POST['email']."', '".$pwd_hashed."', '[\"ROLE_USER\", \"ROLE_ADMIN\"]');";
             $pdo->exec($create_admin);
 
             echo("<p>Admin-Account created successfully.</p>");
