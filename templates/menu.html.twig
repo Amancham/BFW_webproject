@@ -7,7 +7,7 @@
     {% if loggedin is same as(TRUE) %}
         <a href="dash.php">Dashboard</a>
 
-        <a href="logout.php">Abmelden</a>
+        <a href="index.php?do=logout">Abmelden</a>
     {% endif %}
 
     {% if isadmin is same as(TRUE) %}
@@ -15,12 +15,12 @@
 
             <a href="tags.php">Tags verwalten</a>
 
-            <a href="logout.php">Abmelden</a>
+            <a href="index.php?do=logout">Abmelden</a>
     {% endif %}
 
     {% if loggedin is same as(FALSE) %}
         <a href="register.php">Registrieren</a>
-        <a href="login.php">Einloggen</a>
+        <a href="index.php?do=login">Einloggen</a>
     {% endif %}
 </nav>
 {% endblock %}

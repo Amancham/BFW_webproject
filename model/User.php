@@ -29,7 +29,7 @@ class User
         }
         else 
         {
-            $this->role = ['ROLE_USER'];
+            $this->role = '["ROLE_USER"]';
         }
         if(array_key_exists('registered', $user_array)) 
         {
@@ -82,4 +82,8 @@ class User
         $this->roles = $roles;
     }
 
+    public function getRegistered()
+    {
+        return $this->registered;
+    }
 }

@@ -1,5 +1,17 @@
-{% extends ../base.html.twig %}
+{% extends '../base.html.twig' %}
 
 {% block body %}
+<form action="verify.php?mode=login" method="post">
+    <fieldset>
+        <legend>Im Konto anmelden</legend>
 
+        <label for="email">E-Mail-Adresse</label><br />
+        <input type="email" id="email" name="email" /><br />
+
+        <label for="pwd">Passwort</label><br />
+        <input type="password" id="pwd" name="pwd" /><br />
+
+    </fieldset>
+    <input type="submit" name="Absenden" />
+</form>
 {% endblock %}

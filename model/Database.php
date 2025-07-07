@@ -7,7 +7,7 @@ class Database
 
     private function __construct() 
     {
-        $CONFIGS = include_once('../assets/config');
+        $CONFIGS = include_once('./assets/config');
         self::$PDOINSTANCE = new PDO("mysql:host=".$CONFIGS['HOST']."; dbname=".$CONFIGS['DB']."", $CONFIGS['USER'], $CONFIGS['PWD']);
     }
 
