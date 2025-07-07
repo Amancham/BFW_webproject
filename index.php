@@ -12,4 +12,4 @@ $twig = new \Twig\Environment($loader, [
 
 $template = $twig->load('base.html.twig');
 
-echo $twig->render('base.html.twig', ['test' => 'Willkommen',]);
+echo $twig->display('base.html.twig');

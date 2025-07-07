@@ -1,0 +1,23 @@
+{% extends base.html.twig %}
+
+{% block title %}
+Admin-Konto Setup
+{% endblock %}
+
+{% block body %}
+<div class="form">
+    <form action="index.php" method="post">
+        <fieldset>
+            <legend>Administrator Konto</legend>
+            <label for="username">Benutzername</label><br />
+            <input type="text" name="username" id="username" required /><br />
+            <label for="email">Email-Adresse</label><br />
+            <input type="email" name="email" id="email" required /><br />
+            <label for="pwd">Passwort</label><br />
+            <input type="password" name="pwd" id="pwd" required /><br />
+
+        </fieldset>
+        <input type="submit" name="Absenden">
+    </form>
+</div>
+{% endblock %}

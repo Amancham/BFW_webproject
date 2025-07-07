@@ -1,5 +1,24 @@
 {% extends base.html.twig %}
 
-{% block body %}
+{% block title %}
+Datenbank Setup
+{% endblock %}
 
+{% block body %}
+<div class="form">
+    <form action="" method="post">
+        <fieldset>
+            <legend>Server Verbindung</legend>
+            <label for="server">Server/Host</label><br />
+            <input type="text" name="server" id="server" required /><br />
+            <label for="user">Benutzername</label><br />
+            <input type="text" name="user" id="user" required /><br />
+            <label for="pwd">Passwort</label><br />
+            <input type="password" name="pwd" id="pwd" required /><br />
+            <label for="db">Datenbank Name</label><br />
+            <input type="text" name="db" id="db" required /><br />
+        </fieldset>
+        <input type="submit" name="Absenden">
+    </form>
+</div>
 {% endblock %}
