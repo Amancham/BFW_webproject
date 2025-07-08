@@ -1,5 +1,6 @@
 <?php
-session_start();
+require('config.php');
+// TODO: Sort through templates again. There is something going wrong here.
 if(!isset($_GET['mode']));
 {
     //die('Direct access to this file is not allowed');
@@ -8,6 +9,8 @@ if(isset($_GET['mode']));
 {
     require_once('controller/UserController.php');
     $action = new UserController();
+    require_once('controller/TagController.php');
+    $tags = new TagController();
     $verify = $_GET['mode'];
     switch($verify) 
     {
@@ -39,6 +42,14 @@ if(isset($_GET['mode']));
         case 'new_comment':
             break;
         case 'new_tag':
+            if($tags->check_if_tag_exists($_POST['tag_name']))
+            {
+                //true = gibt es schon XD
+                header("refresh: 0; url = index.php?do=admin_dash&add=tag");
+            } else {
+                $tags->save_tag(0, $_POST['tag_name']);
+                header("refresh: 0; url = index.php?do=admin_dash");
+            }
             break;
     }
 }

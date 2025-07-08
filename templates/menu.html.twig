@@ -5,10 +5,10 @@
     <a href="index.php">Home</a>
 
     {% if loggedin is same as(TRUE) %}
-        <a href="dash.php">Dashboard</a>
+        <a href="dashboard.php">Dashboard</a>
 
             {% if isadmin is same as(TRUE) %}
-                <a href="tags.php">Tags verwalten</a>
+                <a href="index.php?do=admin_dash">Verwaltung</a>
             {% endif %}
 
         <a href="index.php?do=logout">Abmelden</a>

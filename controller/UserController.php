@@ -116,4 +116,13 @@ class UserController {
         }
     }
 
+    public function list_users()
+    {
+        $stmt = $this->pdo->query("SELECT * FROM user");
+        $rows = $stmt->rowCount();
+        if($rows > 0) 
+        {
+            return $stmt->fetchAll();
+        }
+    }
 }

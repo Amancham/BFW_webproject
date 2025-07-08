@@ -1,73 +1,5 @@
 <?php
-session_start(); 
-if(!isset($_SESSION['uid'])) {
-    $_SESSION['uid'] = 0;
-    $_SESSION['isadmin'] = FALSE;
-}
-if(!file_exists('assets/config')) 
-{
-    header("Location:install/index.php");
-}
-require_once 'vendor/autoload.php';
-require_once 'controller/UserController.php';
-require_once 'model/Message.php';
-
-$loader = new \Twig\Loader\FilesystemLoader('templates');
-$twig = new \Twig\Environment($loader, [
-    //'cache' => 'cache',
-    'debug' => true,
-]);
-
-$template = $twig->load('base.html.twig');
-$menu_template = $twig->load('menu.html.twig');
-$success_temp = $twig->load('success.html.twig');
-$error_temp = $twig->load('error.html.twig');
-
-if(isset($_SESSION['msg']) && isset($_SESSION['msg_type']))
-{
-    //TODO: Blocks are currently rendered outside of the base template??
-    $msg = new Message($_SESSION['msg'], $_SESSION['msg_type']);
-    if($msg->getType() === 'SUCCESS')
-    {
-        //load success template and reset message
-        $message = $msg->getMessage();
-        echo $success_temp->renderBlock('success', ['message' => $message]);
-        $_SESSION['msg'] = null;
-        $_SESSION['msg_type'] = null;
-    } else {
-        //load error template and reset message;
-        $message = $msg->getMessage();
-        echo $error_temp->renderBlock('error', ['message' => $message]);
-        $_SESSION['msg'] = null;
-        $_SESSION['msg_type'] = null;
-    }
-}
-
-if($_SESSION['uid'] === 0)
-{
-    $loggedin = FALSE;
-    $isadmin = FALSE;
-    echo $template->render();
-    echo $menu_template->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
-}
-else if ($_SESSION['uid'] !== 0) {
-    $action = new UserController(); 
-    $user = $action->load_user($_SESSION['uid']);
-    $loggedin = TRUE;
-    $rollen = $user->getRoles();
-    if(str_contains($user->getRoles(), 'ROLE_ADMIN'))
-    {
-        // TODO: Admin-Menu not being displayed, need to sort this out!
-        $_SESSION['isadmin'] = TRUE;
-        $isadmin = TRUE;
-        echo $template->render();
-        echo $menu_template->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
-    } else {
-        $isadmin = FALSE;
-        echo $template->render();
-        echo $menu_template->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
-    }
-}
+require('config.php');
 
 if(isset($_GET['do']))
 {
@@ -90,8 +22,63 @@ if(isset($_GET['do']))
             $register = $twig->load('user/register.html.twig');
             echo $register->renderBlock('body');
             break;
-        case 'dash':
-            echo("Eingeloggt. Yay!");
+        case 'admin_dash':
+            $dash = $twig->load('admin/dashboard.html.twig');
+            break;
+        case 'dashboard':
+            $userdash = $twig->load('user/dashboard.html.twig');
             break;
     }
+
+    if($do === 'admin_dash')
+    {
+        if(!$_SESSION['isadmin'])
+        {
+            die("Access not permitted!");
+        }
+        if(isset($_GET['add']))
+        {
+            $adding = $_GET['add'];
+            switch($adding)
+            {
+                case 'tag':
+                    $add_tag = $twig->load('admin/add_tag.html.twig');
+                    //echo $add_tag->renderBlock('body');
+                    echo $twig->render($add_tag);
+                    break;
+                case 'exercise':
+                    break;
+                default:
+                    
+            }
+        } else {
+        
+            $tags = new TagController();
+            
+            $taglist = $tags->list_tags();
+            if(!empty($taglist))
+            {
+                // render template
+                $items = $taglist;
+                $twig->load('admin/list.html.twig', ['taglist' => $items]);
+            } else {
+                $taglist = "Keine Tags angelegt.";
+                $twig->load($dash, ['taglist' => $taglist]);
+            }
+
+            $userlist = $action->list_users();
+            if(!empty($userlist))
+            {
+                // render template
+                $items = $userlist;
+                $twig->load('admin/list.html.twig', ['userlist.items' => $items]);
+            } else {
+                $userlist = "Keine Benutzer angelegt.";
+                $twig->load($dash, ['userlist' => $userlist]);
+            }
+            //echo $dash->renderBlock('body');
+            echo $twig->render($dash);
+        }
+    }
 }
+

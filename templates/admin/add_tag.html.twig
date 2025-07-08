@@ -1,0 +1,15 @@
+{% extends './base.html.twig' %}
+
+{% block title %}Ein Tag hinzufügen{% endblock %}
+
+{% block body %}
+
+<form action="verify.php?mode=new_tag" method="post">
+<fieldset>
+<legend>Einen neuen Tag hinzufügen</legend>
+<label for="tag_name">Bezeichnung bzw. Name</label><br />
+<input type="text" id="tag_name" name="tag_name" required /><br />
+</fieldset>
+<input type="submit" name="Absenden" />
+</form>
+{% endblock %}

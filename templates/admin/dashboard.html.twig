@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin-Bereich{% endblock %}
+
+{% block body %}
+<h1>{{ title }}</h1>
+
+<div class="dash">
+    <div class="item">
+        <div class="header">Tags</div>
+        <div class="content">
+            <div><a href="index.php?do=admin_dash&add=tag">Neues Tag</a></div>
+            {{ taglist }}
+        </div>
+    </div>
+
+    <div class="item">
+        <div class="header">Übungen</div>
+        <div class="content">
+        <div><a href="add_exercise">Neue Aufgabe</a></div>
+            {{ exerciselist }}
+        </div>
+    </div>
+
+    <div class="item">
+        <div class="header">Benutzer</div>
+        <div class="content">
+            {{ userlist }}
+        </div>
+    </div>
+</div>
+{% endblock %}
