@@ -15,6 +15,7 @@ if(isset($_GET['mode']));
             if($action->check_login($_POST['email'], $_POST['pwd']))
             {
                 $action->do_login($_POST['email']);
+                //TODO: possibly set up a proper dashboard
                 header("refresh: 0; url = index.php?do=dash");
             } else {
                 $_SESSION['msg'] = 'Die Login-Daten waren inkorrekt.';
@@ -22,7 +23,14 @@ if(isset($_GET['mode']));
                 header("refresh: 0; url = index.php?do=login");
             }
             break;
-        case 'signup':
+        case 'register':
+            if($action->check_signup($_POST['email'], $_POST['pwd'], $_POST['pwd2']))
+            {
+                $action->do_signup($_POST['username'], $_POST['email'], $_POST['pwd']);
+                header("refresh: 0; url = index.php?do=login");
+            } else {
+                header("refresh: 0; url = index.php?do=register");
+            }
             break;
         case 'new_exercise':
             break;

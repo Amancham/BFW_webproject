@@ -63,14 +63,46 @@ class UserController {
         return $this->load_user($new_id);
     }
 
-    public function check_signup() 
+    public function check_signup($email, $pwd, $pwd2) 
     {
-
+        if($pwd !== $pwd2)
+        {
+            $_SESSION['msg'] = "Passwort und Passwort Widerholung stimmen nicht überein.";
+            $_SESSION['msg_type'] = 'ERROR';
+            return false;
+        }
+        else if(strlen($pwd) < 8)
+        {
+            $_SESSION['msg'] = "Das Passwort muss mindestens 8 Zeichen lang sein.";
+            $_SESSION['msg_type'] = 'ERROR';
+            return false;
+        } else {
+            $stmt = $this->pdo->prepare("SELECT * FROM user WHERE email = ?");
+            $stmt->execute([$email]);
+            $rowcount = $stmt->rowCount();
+            if($rowcount > 0)
+            {
+                $_SESSION['msg'] = "Diese E-Mail-Adresse ist bereits registriert.";
+                $_SESSION['msg_type'] = 'ERROR';
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public function do_signup() 
+    public function do_signup($username, $email, $pwd) 
     {
-
+        $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
+        $new_user = [
+            'uid' => 0,
+            'username' => addslashes($username),
+            'email' => addslashes($email),
+            'password' => $hashed_pwd
+        ];
+        $user = new User($new_user);
+        $this->save_user($user);
     }
 
     public function save_user($user) 
@@ -78,20 +110,10 @@ class UserController {
         if ($user->getUid() == 0) {
             $stmt = $this->pdo->prepare("INSERT INTO user (username, email, password, roles) VALUES (?, ?, ?, ?)");
             $stmt->execute([$user->getUsername(), $user->getEmail(), $user->getPassword(), $user->getRoles()]);
-            //$sql = "INSERT INTO user (username, email, password, roles) VALUES ('" . $user->getUsername() . "', '" . $user->getEmail() . "', '" . $user->getPassword() . "', '".$user->getRoles()."');";
-            //$this->pdo->exec($sql);
         } else {
             $stmt = $this->pdo->prepare("UPDATE player SET username = ?, password = ?, email = ?, roles = ?, registered = ? WHERE uid = ?");
             $stmt->execute([$user->getUsername(), $user->getPassword(), $user->getEmail(), $user->getRoles(), $user->getRegistered(), $user->getUid()]);
-            //$sql = "UPDATE player SET username = '" . $user->getUsername() . "', password = '" . $user->getPassword() . "', email = '" . $user->getEmail() . "', pwreset = " . $user->getPwreset() . ", role = " . $user->getRole() . ", created_at = " . $user->getCreated_at() . " WHERE uid = " . $user->getUid() . ";";
-            //$stmt = $this->pdo->prepare($sql);
-            //$stmt->execute();
         }
-    }
-
-    public function change_password() 
-    {
-
     }
 
 }

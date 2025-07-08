@@ -25,11 +25,11 @@ class User
         $this->password = $user_array['password'];
         if(array_key_exists('roles', $user_array)) 
         {
-            $this->role = $user_array['roles'];
+            $this->roles = $user_array['roles'];
         }
         else 
         {
-            $this->role = '["ROLE_USER"]';
+            $this->roles = '["ROLE_USER"]';
         }
         if(array_key_exists('registered', $user_array)) 
         {

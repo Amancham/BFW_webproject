@@ -4,6 +4,10 @@ if(!isset($_SESSION['uid'])) {
     $_SESSION['uid'] = 0;
     $_SESSION['isadmin'] = FALSE;
 }
+if(!file_exists('assets/config')) 
+{
+    header("Location:install/index.php");
+}
 require_once 'vendor/autoload.php';
 require_once 'controller/UserController.php';
 require_once 'model/Message.php';
@@ -21,6 +25,7 @@ $error_temp = $twig->load('error.html.twig');
 
 if(isset($_SESSION['msg']) && isset($_SESSION['msg_type']))
 {
+    //TODO: Blocks are currently rendered outside of the base template??
     $msg = new Message($_SESSION['msg'], $_SESSION['msg_type']);
     if($msg->getType() === 'SUCCESS')
     {
@@ -50,8 +55,6 @@ else if ($_SESSION['uid'] !== 0) {
     $user = $action->load_user($_SESSION['uid']);
     $loggedin = TRUE;
     $rollen = $user->getRoles();
-    echo($rollen);
-    echo($loggedin);
     if(str_contains($user->getRoles(), 'ROLE_ADMIN'))
     {
         // TODO: Admin-Menu not being displayed, need to sort this out!
@@ -77,12 +80,15 @@ if(isset($_GET['do']))
             break;
         case 'logout':
             session_unset(); 
-            session_destroy(); 
+            session_destroy();
+            session_start(); 
             $_SESSION['msg'] = 'Du wurdest erfolgreich ausgeloggt.';
             $_SESSION['msg_type'] = 'SUCCESS';
-            header("refresh: 1; url = index.php");
+            header("refresh: 0; url = index.php");
             break;
-        case 'signup':
+        case 'register':
+            $register = $twig->load('user/register.html.twig');
+            echo $register->renderBlock('body');
             break;
         case 'dash':
             echo("Eingeloggt. Yay!");

@@ -1,21 +1,21 @@
 {% extends base.html.twig %}
 
 {% block body %}
-<form>
+<form action="verify.php?mode=register" method="post">
     <fieldset>
         <legend>Ein Konto erstellen</legend>
 
         <label for="username">Benutzername</label><br />
-        <input type="text" id="username" name="username" /><br />
+        <input type="text" id="username" name="username" required /><br />
 
         <label for="email">E-Mail-Adresse</label><br />
-        <input type="email" id="email" name="email" /><br />
+        <input type="email" id="email" name="email" required /><br />
 
         <label for="pwd">Passwort</label><br />
-        <input type="password" id="pwd" name="pwd" /><br />
+        <input type="password" id="pwd" name="pwd" required /><br />
 
         <label for="pwd2">Passwort Widerholung</label><br />
-        <input type="password" id="pwd2" name="pwd2" /><br />
+        <input type="password" id="pwd2" name="pwd2" required /><br />
     </fieldset>
     <input type="submit" name="Absenden" />
 </form>
