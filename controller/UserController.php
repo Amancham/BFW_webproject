@@ -49,6 +49,8 @@ class UserController {
             {
                 return true;
             } else {
+                $_SESSION['msg'] = 'Die Login-Daten waren inkorrekt.';
+                $_SESSION['msg_type'] = 'ERROR';
                 return false;
             }
         }

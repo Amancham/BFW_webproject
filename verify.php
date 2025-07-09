@@ -21,8 +21,6 @@ if(isset($_GET['mode']));
                 //TODO: possibly set up a proper dashboard
                 header("refresh: 0; url = index.php?do=dash");
             } else {
-                $_SESSION['msg'] = 'Die Login-Daten waren inkorrekt.';
-                $_SESSION['msg_type'] = 'ERROR';
                 header("refresh: 0; url = index.php?do=login");
             }
             break;
@@ -44,7 +42,6 @@ if(isset($_GET['mode']));
         case 'new_tag':
             if($tags->check_if_tag_exists($_POST['tag_name']))
             {
-                //true = gibt es schon XD
                 header("refresh: 0; url = index.php?do=admin_dash&add=tag");
             } else {
                 $tags->save_tag(0, $_POST['tag_name']);
