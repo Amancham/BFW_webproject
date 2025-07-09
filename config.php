@@ -17,10 +17,13 @@ require_once 'controller/TagController.php';
 require_once 'model/Message.php';
 
 // template stuff
-$loader = new \Twig\Loader\FilesystemLoader('templates');
+$loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/templates');
 $twig = new \Twig\Environment($loader, [
     //'cache' => 'cache',
     'debug' => true,
+    'auto_reload' => true,
+    'strict_variables' => true,
+    'autoescape' => 'html',
 ]);
 
 $temp_base = $twig->load('base.html.twig');

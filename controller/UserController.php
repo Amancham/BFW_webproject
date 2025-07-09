@@ -37,7 +37,7 @@ class UserController {
     {
         $check = $this->pdo->prepare("SELECT password FROM user WHERE email = ?");
         $stmt = $check->execute([$email]);
-        $rows = $check->fetchAll();
+        $rows = $check->fetchAll(PDO::FETCH_ASSOC);
         $row_count = $check->rowCount();
         if($row_count > 0)
         {
@@ -124,7 +124,7 @@ class UserController {
         $rows = $stmt->rowCount();
         if($rows > 0) 
         {
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
 }

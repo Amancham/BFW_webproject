@@ -9,7 +9,13 @@
         <div class="header">Tags</div>
         <div class="content">
             <div><a href="index.php?do=admin_dash&add=tag">Neues Tag</a></div>
-            {{ taglist }}
+            <ul>
+            {% for tag in tags %}
+                <li>{{ tag.name }}</li>
+            {% else %}
+            Noch keine Tags vorhanden.
+            {% endfor %}
+            </ul>
         </div>
     </div>
 
@@ -17,14 +23,21 @@
         <div class="header">Übungen</div>
         <div class="content">
         <div><a href="add_exercise">Neue Aufgabe</a></div>
-            {{ exerciselist }}
+
         </div>
     </div>
 
     <div class="item">
         <div class="header">Benutzer</div>
         <div class="content">
-            {{ userlist }}
+        <div><a href="index.php?do=admin_dash&add=useradmin">Benutzerverwaltung</a></div>
+            <ul>
+            {% for user in users %}
+                <li>{{ user.username }}</li>
+            {% else %}
+            Noch keine Benutzer vorhanden.
+            {% endfor %}
+            </ul>
         </div>
     </div>
 </div>

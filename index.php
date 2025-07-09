@@ -54,32 +54,13 @@ if(isset($_GET['do']))
             }
         } else {
         
-            $tags = new TagController();
+            $tagControl = new TagController();
             
-            $taglist = $tags->list_tags();
-
-            if(!empty($taglist))
-            {
-                // render template
-                $items = $taglist;
-                $twig->load('admin/list.html.twig', ['taglist' => $items]);
-            } else {
-                $taglist = "Keine Tags angelegt.";
-                $twig->load($dash, ['taglist' => $taglist]);
-            }
-
+            $taglist = $tagControl->list_tags();
             $userlist = $action->list_users();
-            if(!empty($userlist))
-            {
-                // render template
-                $items = $userlist;
-                $twig->load('admin/list.html.twig', ['userlist.items' => $items]);
-            } else {
-                $userlist = "Keine Benutzer angelegt.";
-                $twig->load($dash, ['userlist' => $userlist]);
-            }
-            //echo $dash->renderBlock('body');
-            echo $dash->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
+
+            echo $twig->render('admin/dashboard.html.twig', ['loggedin' => $loggedin, 'isadmin' => $isadmin, 'tags' => $taglist, 'users' => $userlist]);
+            //echo $dash->render(['loggedin' => $loggedin, 'isadmin' => $isadmin, 'tags' => $tags]);
         }
     }
 } else {

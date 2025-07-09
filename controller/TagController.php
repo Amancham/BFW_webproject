@@ -29,7 +29,7 @@ class TagController
         $rows = $stmt->rowCount();
         if($rows > 0) 
         {
-            return $stmt->fetchAll();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
 
