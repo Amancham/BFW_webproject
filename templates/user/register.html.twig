@@ -1,9 +1,12 @@
-{% extends base.html.twig %}
+{% extends 'base.html.twig' %}
+
+{% block title %}Registrieren eines Benutzerkontos{% endblock %}
 
 {% block body %}
+
 <form action="verify.php?mode=register" method="post">
     <fieldset>
-        <legend>Ein Konto erstellen</legend>
+        <legend>Erforderliche Angaben</legend>
 
         <label for="username">Benutzername</label><br />
         <input type="text" id="username" name="username" required /><br />

@@ -1,5 +1,6 @@
 <?php
 require('config.php');
+$index = $twig->load('index.html.twig');
 
 if(isset($_GET['do']))
 {
@@ -8,7 +9,7 @@ if(isset($_GET['do']))
     {
         case 'login':
             $login = $twig->load('user/login.html.twig');
-            echo $login->renderBlock('body');
+            echo $login->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
             break;
         case 'logout':
             session_unset(); 
@@ -20,7 +21,7 @@ if(isset($_GET['do']))
             break;
         case 'register':
             $register = $twig->load('user/register.html.twig');
-            echo $register->renderBlock('body');
+            echo $register->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
             break;
         case 'admin_dash':
             $dash = $twig->load('admin/dashboard.html.twig');
@@ -44,7 +45,7 @@ if(isset($_GET['do']))
                 case 'tag':
                     $add_tag = $twig->load('admin/add_tag.html.twig');
                     //echo $add_tag->renderBlock('body');
-                    echo $twig->render($add_tag);
+                    echo $add_tag->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
                     break;
                 case 'exercise':
                     break;
@@ -56,6 +57,7 @@ if(isset($_GET['do']))
             $tags = new TagController();
             
             $taglist = $tags->list_tags();
+
             if(!empty($taglist))
             {
                 // render template
@@ -77,8 +79,10 @@ if(isset($_GET['do']))
                 $twig->load($dash, ['userlist' => $userlist]);
             }
             //echo $dash->renderBlock('body');
-            echo $twig->render($dash);
+            echo $dash->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
         }
     }
+} else {
+    echo $index->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
 }
 

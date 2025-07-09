@@ -23,8 +23,7 @@ $twig = new \Twig\Environment($loader, [
     'debug' => true,
 ]);
 
-$template = $twig->load('base.html.twig');
-$menu_template = $twig->load('menu.html.twig');
+$temp_base = $twig->load('base.html.twig');
 $success_temp = $twig->load('success.html.twig');
 $error_temp = $twig->load('error.html.twig');
 
@@ -32,30 +31,31 @@ $error_temp = $twig->load('error.html.twig');
 if(isset($_SESSION['msg']) && isset($_SESSION['msg_type']))
 {
     //TODO: Blocks are currently rendered outside of the base template??
+    // possibly make a true/false function to add wherever we need messaging
+    // current problem is double-rendering of two templates. Needs changing
     $msg = new Message($_SESSION['msg'], $_SESSION['msg_type']);
     if($msg->getType() === 'SUCCESS')
     {
         //load success template and reset message
         $message = $msg->getMessage();
-        echo $success_temp->renderBlock('success', ['message' => $message]);
+        echo $success_temp->render(['message' => $message]);
         $_SESSION['msg'] = null;
         $_SESSION['msg_type'] = null;
     } else {
         //load error template and reset message;
         $message = $msg->getMessage();
-        echo $error_temp->renderBlock('error', ['message' => $message]);
+        echo $error_temp->renderBlock('body', ['message' => $message]);
         $_SESSION['msg'] = null;
         $_SESSION['msg_type'] = null;
     }
 }
 
 // Make sure the menu is always displayed correctly 
+// always render with ['loggedin' => $loggedin, 'isadmin' => $isadmin]
 if($_SESSION['uid'] === 0)
 {
     $loggedin = FALSE;
     $isadmin = FALSE;
-    echo $template->render();
-    echo $menu_template->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
 }
 else if ($_SESSION['uid'] !== 0) {
     $action = new UserController(); 
@@ -66,11 +66,7 @@ else if ($_SESSION['uid'] !== 0) {
     {
         $_SESSION['isadmin'] = TRUE;
         $isadmin = TRUE;
-        echo $template->render();
-        echo $menu_template->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
     } else {
         $isadmin = FALSE;
-        echo $template->render();
-        echo $menu_template->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
     }
 }

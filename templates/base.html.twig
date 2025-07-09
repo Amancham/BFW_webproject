@@ -15,16 +15,29 @@
 </head>
 <body>
     <header>
-        {% block menu %}{% endblock %}
+        <nav>
+            <a href="index.php">Home</a>
+
+            {% if loggedin is same as(TRUE) %}
+                <a href="dashboard.php">Dashboard</a>
+
+                    {% if isadmin is same as(TRUE) %}
+                        <a href="index.php?do=admin_dash">Verwaltung</a>
+                    {% endif %}
+
+                <a href="index.php?do=logout">Abmelden</a>
+            {% endif %}
+
+            {% if loggedin is same as(FALSE) %}
+                <a href="index.php?do=register">Registrieren</a>
+                <a href="index.php?do=login">Einloggen</a>
+            {% endif %}
+        </nav>
     </header>
 
-    {% block error %}
-    {% endblock %}
-
-    {% block success %}
-    {% endblock %}
-
+    <h2>{{ block('title') }}</h2>
     {% block body %}
+
     {% endblock %}
 </body>
 </html>

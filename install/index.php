@@ -19,7 +19,6 @@ $template = $twig->load('install/blank.html.twig');
 
 
 echo $twig->render('install/blank.html.twig');
-//echo $template->renderBlock('title', );
 
 if(!file_exists('../assets/config')) 
 {
