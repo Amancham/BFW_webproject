@@ -3,6 +3,8 @@ session_start();
 if(!isset($_SESSION['uid'])) {
     $_SESSION['uid'] = 0;
     $_SESSION['isadmin'] = FALSE;
+    $loggedin = false;
+    $isadmin = false;
 }
 // make sure we are always sent to the installer unless the site is already set up.
 if(!file_exists('assets/config')) 
@@ -33,24 +35,39 @@ $error_temp = $twig->load('error.html.twig');
 // Messaging across the board 
 if(isset($_SESSION['msg']) && isset($_SESSION['msg_type']))
 {
-    //TODO: Blocks are currently rendered outside of the base template??
-    // possibly make a true/false function to add wherever we need messaging
-    // current problem is double-rendering of two templates. Needs changing
+    //TODO: currently not working?
     $msg = new Message($_SESSION['msg'], $_SESSION['msg_type']);
+    switch ($msg->getType())
+    {
+        case 'SUCCESS':
+            $message = $msg->getMessage();
+            echo $success_temp->render(['message' => $message, 'loggedin' => $loggedin, 'isadmin' => $isadmin]);
+            $_SESSION['msg'] = null;
+            $_SESSION['msg_type'] = null;
+            break;
+        case 'ERROR':
+            $message = $msg->getMessage();
+            echo $error_temp->renderBlock('body', ['message' => $message, 'loggedin' => $loggedin, 'isadmin' => $isadmin]);
+            $_SESSION['msg'] = null;
+            $_SESSION['msg_type'] = null;
+            break;
+    }
+    /*
     if($msg->getType() === 'SUCCESS')
     {
         //load success template and reset message
         $message = $msg->getMessage();
-        echo $success_temp->render(['message' => $message]);
+        echo $success_temp->render(['message' => $message, 'loggedin' => $loggedin, 'isadmin' => $isadmin]);
         $_SESSION['msg'] = null;
         $_SESSION['msg_type'] = null;
     } else {
         //load error template and reset message;
         $message = $msg->getMessage();
-        echo $error_temp->renderBlock('body', ['message' => $message]);
+        echo $error_temp->renderBlock('body', ['message' => $message, 'loggedin' => $loggedin, 'isadmin' => $isadmin]);
         $_SESSION['msg'] = null;
         $_SESSION['msg_type'] = null;
     }
+        */
 }
 
 // Make sure the menu is always displayed correctly 

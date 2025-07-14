@@ -1,7 +1,8 @@
-{% extends base.html.twig %}
+{% extends 'base.html.twig' %}
 
-{% block success %}
+{% block body %}
 <div class="error">
     <p> {{ message }} </p>
 </div>
+{{ parent() }}
 {% endblock %}

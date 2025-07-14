@@ -15,8 +15,11 @@ if(isset($_GET['do']))
             session_unset(); 
             session_destroy();
             session_start(); 
+            $loggedin = false;
+            $isadmin = false;
             $_SESSION['msg'] = 'Du wurdest erfolgreich ausgeloggt.';
             $_SESSION['msg_type'] = 'SUCCESS';
+            echo $temp_base->render(['loggedin' => $loggedin, 'isadmin' => $isadmin]);
             header("refresh: 0; url = index.php");
             break;
         case 'register':
